@@ -55,9 +55,19 @@ def metodo_vandermonde_R(estado=True):
   if estado:
     Mostrar_resultado(result)
 
+def metodo_vandermonde_I(estado=True):
+  inicio = time.time()
+  result = Vandermonde_I(Lista_Polinomios)
+  fin = time.time()
+  tiempo_vander_i.delete(1.0, tk.END)
+  tiempo_vander_i.insert(tk.END, round((fin - inicio)*1000, 3))
+  if estado:
+    Mostrar_resultado(result)
+
 def todos_los_metodos():
   metodo_lagrange(estado=False)
   metodo_vandermonde_R(estado=True)
+  metodo_vandermonde_I(estado=True)
 
 
 #__________________________________________________________________________________________________________________________
@@ -102,10 +112,10 @@ button1.place(x=int(0.35*width),y=int(0.35*height))
 button2 = tk.Button(window, text='VANDER R', font='Courier 15 bold', command=metodo_vandermonde_R)
 button2.place(x=int(0.35*width),y=int(0.41*height))
 
-button3 = tk.Button(window, text='VANDER I', font='Courier 15 bold', command=metodo_vandermonde_R)
+button3 = tk.Button(window, text='VANDER I', font='Courier 15 bold', command=metodo_vandermonde_I)
 button3.place(x=int(0.35*width),y=int(0.47*height))
 
-button4 = tk.Button(window, text='ITERATIV', font='Courier 15 bold', command=metodo_vandermonde_R)
+button4 = tk.Button(window, text='ITERATIV', font='Courier 15 bold')
 button4.place(x=int(0.35*width),y=int(0.53*height))
 
 button4 = tk.Button(window, text='MOSTRAR TODO', font='Courier 15 bold', command=todos_los_metodos)

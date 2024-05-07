@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 #------------------------------funciones auxiliares----------------------------------
 
@@ -18,6 +19,11 @@ def interpolacionLagrange(x, y):
 
     return polinomio
 
+def unicidad(val, n):
+    angulo = 2 * math.pi * val / n
+    parte_real = round(math.cos(angulo))
+    parte_imaginaria = round(math.sin(angulo))
+    return complex(parte_real, parte_imaginaria)
 #------------------------------------------------------------------------------------
 
 #_________________________________METODOS____________________________________________
@@ -72,5 +78,34 @@ def Vandermonde_R(polinomios):
     polinomio_resultante = np.dot(matriz_inversa,Mw)[::-1]
 
     return np.poly1d(polinomio_resultante)
-    
+
+def Vandermonde_I(polinomios):
+    cantidad = 1
+    for pol in polinomios:
+        cantidad += pol.order
+
+    values = [unicidad(k,cantidad) for k in range(cantidad)]
+
+    #-=============Creamos-la-matriz-Vandermonde-R:
+    matriz = np.vander(values, increasing=True)
+
+    #1.=================================EVALUACION:
+    PQw = []
+    for pol in polinomios:
+        coef = np.pad(pol.coefficients[::-1], (0, len(values) - pol.order - 1), 'constant')
+        PQw.append(np.dot(matriz, coef))
+
+    #2.=================================MUL. PUNTO:
+    Mw = []
+    for i in range(cantidad):
+        prod_punto = 1
+        for j in range(len(PQw)):
+            prod_punto *= PQw[j][i]
+        Mw.append(prod_punto)
+
+    #3.==============================INTERPOLACION:
+    matriz_inversa = np.linalg.inv(matriz)
+    polinomio_resultante = np.dot(matriz_inversa,Mw)[::-1]
+
+    return np.poly1d(np.real(polinomio_resultante))
 #____________________________________________________________________________________
