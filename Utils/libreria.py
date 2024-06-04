@@ -13,12 +13,19 @@ def plot_function(polynomials, leyenda = True):
     # Agregar un subplot a la figura
     plot = fig.add_subplot(1, 1, 1)
 
+    # Agregar título al gráfico
+    if len(polynomials) == 1:
+       plot.set_title('Gráfico del resultado')
+    else:
+       plot.set_title('Gráfico de los polinomios')
+    i = 0
     for polynomial in polynomials:
         # Calcular valores de y para el polinomio
         y_values = np.polyval(polynomial, x_values)
         
         # Graficar el polinomio
-        plot.plot(x_values, y_values, label=f"Polinomio: {polynomial}")
+        plot.plot(x_values, y_values, label=f"P{i}: {polynomial}")
+        i += 1
     
     if leyenda == True:
       plot.legend()
@@ -27,8 +34,6 @@ def plot_function(polynomials, leyenda = True):
     # Agregar líneas X e Y
     plot.axhline(0, color='black',linewidth=0.5)
     plot.axvline(0, color='black',linewidth=0.5)
-
-    # Agregar título al gráfico
     #plot.title('Gráfico de dispersión')
 
     # Limitar los ejes X e Y

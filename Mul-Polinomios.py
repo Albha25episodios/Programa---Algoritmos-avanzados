@@ -15,6 +15,8 @@ def Mostrar_graficos(result):
 def Mostrar_resultado(result):
   resultado.delete(1.0, tk.END)
   resultado.insert(tk.END, result)
+  if type(result) is str:
+    return
   Mostrar_graficos(result)
 
 
@@ -26,7 +28,7 @@ def Limpiar_todo():
   tiempo_vander_r.delete(1.0, tk.END)
   tiempo_vander_i.delete(1.0, tk.END)
   tiempo_iterativo.delete(1.0, tk.END)
-  GraficarPolinomios([[0]], False, (int(0.7*width), int(0.10*height)))
+  GraficarPolinomios([[0], [0]], False, (int(0.7*width), int(0.10*height)))
   GraficarPolinomios([[0]], False, (int(0.7*width), int(0.5*height)))
 
 def IngresarPolinomio():
@@ -64,10 +66,20 @@ def metodo_vandermonde_I(estado=True):
   if estado:
     Mostrar_resultado(result)
 
+def metodo_iterativo(estado =True):
+  inicio = time.time()
+  result = Iterativo(Lista_Polinomios)
+  fin = time.time()
+  tiempo_iterativo.delete(1.0, tk.END)
+  tiempo_iterativo.insert(tk.END, round((fin - inicio)*1000, 3))
+  if estado:
+    Mostrar_resultado(result)
+
 def todos_los_metodos():
   metodo_lagrange(estado=False)
-  metodo_vandermonde_R(estado=True)
-  metodo_vandermonde_I(estado=True)
+  metodo_vandermonde_R(estado=False)
+  metodo_vandermonde_I(estado=False)
+  metodo_iterativo(estado =True)
 
 
 #__________________________________________________________________________________________________________________________
@@ -115,7 +127,7 @@ button2.place(x=int(0.35*width),y=int(0.41*height))
 button3 = tk.Button(window, text='VANDER I', font='Courier 15 bold', command=metodo_vandermonde_I)
 button3.place(x=int(0.35*width),y=int(0.47*height))
 
-button4 = tk.Button(window, text='ITERATIV', font='Courier 15 bold')
+button4 = tk.Button(window, text='ITERATIV', font='Courier 15 bold', command= metodo_iterativo)
 button4.place(x=int(0.35*width),y=int(0.53*height))
 
 button4 = tk.Button(window, text='MOSTRAR TODO', font='Courier 15 bold', command=todos_los_metodos)
